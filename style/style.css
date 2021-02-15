@@ -1,0 +1,31 @@
+*,::before,::after{
+    /* box-sizing: border-box 
+    pourque le padding soit pris en 
+    compte dans le calcul des largeurs */
+    box-sizing: border-box; 
+    padding: 0;
+    margin: 0;
+}
+.modal {
+    position: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+}
+
+.modal-wrapper {
+    overflow: auto;
+    width: 600px;
+    /* 100vh veut dire une fois la hauteur
+    de la taille de l'écran  et 100 vw veut dire
+    une fois la largeur de l'écran*/
+    max-width: calc(100vw - 20px);
+    max-height: calc(100vh - 20px);
+    padding: 20px;
+    background-color: #fff;
+}

@@ -6,6 +6,10 @@
     padding: 0;
     margin: 0;
 }
+
+*:focus {
+    box-shadow: 0 0 10px blue;
+}
 .modal {
     position: fixed;
     display: flex;

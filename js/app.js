@@ -1,13 +1,14 @@
 let modal = null;
+const focusableSelector = 'button, a, input, textarea';
+let focusables = [];
 
 const openModal = function(e) {
     e.preventDefault();
-    const target = document.querySelector(e.target.getAttribute('href'));
-    target.style.display = null;
-    target.removeAttribute('aria-hidden');
-    target.setAttribute('aria-modal', 'true');
-
-    modal = target;
+    modal = document.querySelector(e.target.getAttribute('href'));
+    focusables = Array.from(modal.querySelector(focusableSelector));
+    modal.style.display = null;
+    modal.removeAttribute('aria-hidden');
+    modal.setAttribute('aria-modal', 'true');
     modal.addEventListener('click', closeModal);
     modal.querySelector('.js-modal-close').addEventListener('click', closeModal);
     modal.querySelector('.js-modal-stop').addEventListener('click', stopPropagation);
@@ -29,6 +30,37 @@ const stopPropagation = function(e) {
     e.stopPropagation();
 }
 
+const focusInModal = function(e) {
+    e.preventDefault();
+    //récupérer l'élément qui est focus actuellement
+    let index = focusables.findIndex(f => f === modal.querySelector(':focus'));
+    if(e.shiftkey === true) {
+        index--;
+    } else {
+        index++;
+    }
+    index++;
+    if(index >= focusables.length) {
+        index = 0;
+    }
+    if(index < 0) {
+        index = focusables.length -1;
+    }
+    focusables[index].focus();
+}
+
 document.querySelectorAll('.js-modal').forEach(a => {
     a.addEventListener('click', openModal)
+});
+
+//appuyer sur echap pour fermer la modal
+window.addEventListener('keydown', function(e) {
+    if(e.key ==="Escape" || e.key === "Esc"){
+        closeModal(e);
+    }
+
+    //Mettre le focus que dans la modal quand on tabule
+    if(e.key === "Tab" && modal !== null) {
+        focusInModal(e);
+    }
 });
